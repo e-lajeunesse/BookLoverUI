@@ -10,6 +10,8 @@ namespace BookLoverUI
     {
         static void Main(string[] args)
         {
+            BookLoverUI ui = new BookLoverUI();
+            ui.RunUI();
         }
     }
 }

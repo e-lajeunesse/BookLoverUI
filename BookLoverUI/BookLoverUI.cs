@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookLoverUI.BookModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,30 @@ namespace BookLoverUI
                     "8.Create a bookshelf\n" +
                     "0.Exit\n");
 
+                string userSelection = Console.ReadLine();
+                switch (userSelection)                
+                {
+                    case "1":
+                        Console.Clear();
+                        DisplayAllBooks();
+
+                        break;
+                }
+
+
             }
+
+
+        }
+
+        public void DisplayAllBooks()
+        {
+            List<BookListItem> allBooks = _service.GetAllBooks().Result;
+            foreach (BookListItem book in allBooks)
+            {
+                Console.WriteLine(book.Title);
+            }
+            Console.ReadKey();
         }
     }
 }

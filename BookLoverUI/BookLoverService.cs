@@ -11,6 +11,7 @@ namespace BookLoverUI
 {
     public class BookLoverService
     {
+        public string AccessToken { get; set; }
         private HttpClient _client;
         
 
@@ -19,12 +20,29 @@ namespace BookLoverUI
             _client = new HttpClient();
         }
 
+        public async Task<string> GetToken(string email, string password)
+        {
+            string url = "https://localhost:44388/token";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"grant_type","password" },
+                {"username",$"{email}" },
+                {"password",$"{password}" }
+            };
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = _client.PostAsync(url, encodedContent).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                Dictionary<string,string> responseBody = await response.Content.ReadAsAsync<Dictionary<string,string>>();
+                return responseBody["access_token"];
+            }
+            return response.StatusCode.ToString();
+        }
         public async Task<List<BookListItem>> GetAllBooks()
         {
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "qPMUckGKzglMYH8AuXWuvmQ5heTYNAziA3lZ-JBCOhZD6A3F9pQb8u6a9YeeGhWctDJyUc7B-BZwy5mwbxFvo2uw4EH-FQ52YcptDmNtEQL40OjR7v9EIykV9ikwUrmGeijxblcJtb0unUfhYnp1rxLH5r8mKRxTZH7eUCYSEy8_" +
-                "73njgLu3AyGXZBBwOGl8PtbNJSgswVHWlvzPLO62ybMRJEs5pgeZTJYOqelyZcj52sGXblXEujunREVLQD-mxUi4xkx8J9sVTd90HHhpjdYsgaS6_g-PeFJGCQ7mF-kea_XBWaxYHNUfBqoz5XqE5VPCRf-oyZ33s0VH6jH8gm-RLk746x3HnAenzsWSfSKR4P1Q3MD4LA-IC-5Ptzmps6dRk-" +
-                "GXIs2pbhdDEq0XRHH3AqKUA0hI_u_UrfhoTN-IzCnv6ujyMrGszwD06zG9eapl6V5wwOY3LY9l2RnkaQ2-fLYZAtExmtP6BfKWalM");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",$"{AccessToken}");
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Book").Result;
 
             if (response.IsSuccessStatusCode)

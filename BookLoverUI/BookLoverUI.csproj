@@ -51,7 +51,12 @@
   <ItemGroup>
     <Compile Include="BookLoverService.cs" />
     <Compile Include="BookLoverUI.cs" />
+    <Compile Include="BookMenu.cs" />
+    <Compile Include="BookModels\BookDetail.cs" />
     <Compile Include="BookModels\BookListItem.cs" />
+    <Compile Include="BookReviewModels\BookReviewDisplayItem.cs" />
+    <Compile Include="BookShelfModels\BookshelfBookDisplay.cs" />
+    <Compile Include="BookShelfModels\BookshelfDisplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

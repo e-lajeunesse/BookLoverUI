@@ -1,5 +1,11 @@
+
+﻿using BookLoverUI.AuthorModels;
+using BookLoverUI.BookModels;
+using BookLoverUI.BookShelfModels;
+
 ﻿using BookLoverUI.BookModels;
 using BookLoverUI.BookReviewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +20,9 @@ namespace BookLoverUI
     {
         public string AccessToken { get; set; }
         private HttpClient _client;
-        
 
-        public BookLoverService() 
+
+        public BookLoverService()
         {
             _client = new HttpClient();
         }
@@ -40,7 +46,7 @@ namespace BookLoverUI
             }
             return response.StatusCode.ToString();
         }
-        
+
         //Book Methods
         public async Task<string> AddBook(string title,string genre,string description,int authorId)
         {
@@ -54,6 +60,9 @@ namespace BookLoverUI
                 {"AuthorId",$"{authorId}" }
             };
             var encodedContent = new FormUrlEncodedContent(parameters);
+
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
 
             HttpResponseMessage response = await _client.PostAsync(url,encodedContent);
             if (response.IsSuccessStatusCode)
@@ -98,13 +107,14 @@ namespace BookLoverUI
             HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
             if (response.IsSuccessStatusCode)
             {
-                return "Book added";
+                return "Book(s) added";
             }
             return response.StatusCode.ToString();
         }
         public async Task<List<BookListItem>> GetAllBooks()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",$"{AccessToken}");
+
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Book").Result;
 
             if (response.IsSuccessStatusCode)
@@ -114,6 +124,20 @@ namespace BookLoverUI
             }
             return null;
         }
+        public async Task<List<AuthorListItems>> GetAuthors()
+        {
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                List<AuthorListItems> authorListItems = await response.Content.ReadAsAsync<List<AuthorListItems>>();
+                return authorListItems;
+            }
+            return null;
+        }
+
 
         public async Task<BookDetail> GetBookByTitle(string title)
         {
@@ -127,6 +151,23 @@ namespace BookLoverUI
             }
             return null;
         }
+
+
+        public async Task<AuthorDetail> GetAuthorByLastName(string lastName)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author?lastName={lastName}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                AuthorDetail author = await response.Content.ReadAsAsync<AuthorDetail>();
+                return author;
+            }
+            return null;
+
+        }
+
+        
 
         // BookReview Methods
 
@@ -205,24 +246,53 @@ namespace BookLoverUI
             return null;
         }*/
 
-        /*public async Task<string> DeleteBookReview(int reviewId, string reviewTitle)
+        // Bookshelf Methods
+        public async Task<string> CreateBookshelf(string title, List<int> bookIds)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            string url = $"https://localhost:44388/api/BookReview";
             Dictionary<string, string> parameters = new Dictionary<string, string>
             {
-                {"ReviewId",$"{reviewId}" },
-                {"ReviewTitle",$"{reviewTitle}" }
+                {"Title",$"{title}" },                                
             };
-
+            for (int i = 0; i < bookIds.Count; i++)
+            {
+                parameters[$"BookIds[{i}]"] = $"{bookIds[i]}";
+            }
             var encodedContent = new FormUrlEncodedContent(parameters);
-
-            HttpResponseMessage response = await _client.DeleteAsync(url, parameters);
+            string url = "https://localhost:44388/api/Bookshelf";
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
             if (response.IsSuccessStatusCode)
             {
-                return "Review has been deleted";
+                return "Bookshelf added";
             }
-            return response.StatusCode.ToString();
-        }*/
+            else
+            {
+                return response.StatusCode.ToString();
+            }
+        }        
+        public async Task<List<BookshelfDisplay>> GetAllBookshelves()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/GetAllBookshelves").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                List<BookshelfDisplay> shelves = await response.Content.ReadAsAsync<List<BookshelfDisplay>>();
+                return shelves;
+            }
+            return null;
+        }
+
+        public async Task<List<BookshelfDisplay>> GetAllBookshelvesByOwner()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Bookshelf").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                List<BookshelfDisplay> shelves = await response.Content.ReadAsAsync<List<BookshelfDisplay>>();
+                return shelves;
+            }
+            return null;
+        }
+
     }
 }

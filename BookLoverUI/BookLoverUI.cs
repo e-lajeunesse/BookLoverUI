@@ -1,4 +1,5 @@
-﻿using BookLoverUI.BookModels;
+﻿using BookLoverUI.AuthorModels;
+using BookLoverUI.BookModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,8 @@ namespace BookLoverUI
                         bookMenu.RunBookMenu();
                         break;
                     case "2":
-                        //AuthorMenu method;
+                        AuthorMenu authorMenu = new AuthorMenu();
+                        authorMenu.RunAuthorMenu();
                         break;
                     case "3":
                         BookReviewMenu bookReviewMenu = new BookReviewMenu();
@@ -42,6 +44,8 @@ namespace BookLoverUI
                         break;
                     case "4":
                         //Bookshelf Menu method
+                        BookshelfMenu shelfMenu = new BookshelfMenu();
+                        shelfMenu.RunBookshelfMenu();
                         break;
                     case "0":
                         keepRunning = false;

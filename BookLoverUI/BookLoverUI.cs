@@ -25,7 +25,8 @@ namespace BookLoverUI
                     "1.Browse or add books\n" +
                     "2.Browse or add authors\n" +
                     "3.Browse or add reviews\n" +
-                    "4.Browse or add bookshelves\n" +                    
+                    "4.Browse or add bookshelves\n" +
+                    "5.Go to User Profile\n" +                    
                     "0.Exit\n");
 
                 string userSelection = Console.ReadLine();
@@ -47,6 +48,10 @@ namespace BookLoverUI
                         //Bookshelf Menu method
                         BookshelfMenu shelfMenu = new BookshelfMenu();
                         shelfMenu.RunBookshelfMenu();
+                        break;
+                    case "5":
+                        UserProfileMenu profileMenu = new UserProfileMenu();
+                        profileMenu.RunUserProfileMenu();
                         break;
                     case "0":
                         keepRunning = false;

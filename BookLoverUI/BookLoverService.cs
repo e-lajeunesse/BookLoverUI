@@ -2,8 +2,6 @@
 ﻿using BookLoverUI.AuthorModels;
 using BookLoverUI.BookModels;
 using BookLoverUI.BookShelfModels;
-
-﻿using BookLoverUI.BookModels;
 using BookLoverUI.BookReviewModels;
 
 using System;
@@ -13,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using BookLoverUI.UserProfileModels;
 
 namespace BookLoverUI
 {
@@ -292,6 +291,42 @@ namespace BookLoverUI
                 return shelves;
             }
             return null;
+        }
+
+        //User Profile Methods
+        public async Task<UserProfileDisplay> GetUserProfile()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/GetsUserByUserId").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                UserProfileDisplay profile = await response.Content.ReadAsAsync<UserProfileDisplay>();
+                return profile;
+            }
+            return null;
+        }
+
+        public async Task<string> AddUserProfile(string userName)
+        {
+            List<int> bookIds = new List<int>();
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"UserName",$"{userName}" },
+            };
+            for(int i=0; i< bookIds.Count; i++)
+            {
+                parameters[$"BookIds[{i}]"] = $"{bookIds[i]}";
+            }
+            
+            var encodedContent = new FormUrlEncodedContent(parameters);
+            string url = "https://localhost:44388/api/UserProfile";
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Profile Added";
+            }
+            return "Unable to add profile";
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using BookLoverUI.BookModels;
+using BookLoverUI.BookReviewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace BookLoverUI
             HttpResponseMessage response = _client.PostAsync(url, encodedContent).Result;
             if (response.IsSuccessStatusCode)
             {
-                Dictionary<string,string> responseBody = await response.Content.ReadAsAsync<Dictionary<string,string>>();
+                Dictionary<string, string> responseBody = await response.Content.ReadAsAsync<Dictionary<string, string>>();
                 return responseBody["access_token"];
             }
             return response.StatusCode.ToString();
@@ -68,5 +69,81 @@ namespace BookLoverUI
             return null;
         }
 
+        // BookReview Methods
+
+        public async Task<List<BookReviewListItem>> GetAllBookReviews()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                List<BookReviewListItem> bookReviews = await response.Content.ReadAsAsync<List<BookReviewListItem>>();
+                return bookReviews;
+            }
+            return null;
+        }
+
+        // Working on Post endpoint
+        public async Task<string> AddBookReview(int bookId, string reviewTitle, string reviewText, double bookRating)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            string url = $"https://localhost:44388/api/BookReview";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"BookId",$"{bookId}" },
+                {"ReviewTitle",$"{reviewTitle}" },
+                {"ReviewText",$"{reviewText}" },
+                {"BookRating",$"{bookRating}" },
+            };
+
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = await _client.PostAsync(url,encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Review has been added";
+            }
+            return response.StatusCode.ToString();
+        }
+
+        public async Task<BookReviewDetail> GetBookReviewById(int id)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                BookReviewDetail bookReview = await response.Content.ReadAsAsync<BookReviewDetail>();
+                return bookReview;
+            }
+            return null;
+        }
+
+        public async Task<BookReviewEdit> UpdateBookReviewById(int id)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                BookReviewEdit bookReview = await response.Content.ReadAsAsync<BookReviewEdit>();
+                return bookReview;
+            }
+            return null;
+        }
+
+        /*public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                BookReviewDisplayItem bookReview = await response.Content.ReadAsAsync<BookReviewDisplayItem>();
+                return bookReview;
+            }
+            return null;
+        }*/
     }
 }

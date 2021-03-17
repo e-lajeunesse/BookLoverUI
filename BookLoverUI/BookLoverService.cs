@@ -1,4 +1,5 @@
-﻿using BookLoverUI.BookModels;
+﻿using BookLoverUI.AuthorModels;
+using BookLoverUI.BookModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,20 @@ namespace BookLoverUI
             }
             return null;
         }
+        public async Task<List<AuthorListItems>> GetAllAuthors()
+        {
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                List<AuthorListItems> authors = await response.Content.ReadAsAsync<List<AuthorListItems>>();
+                return authors;
+            }
+            return null;
+        }
+
 
     }
 }

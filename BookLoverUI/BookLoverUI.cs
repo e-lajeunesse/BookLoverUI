@@ -1,4 +1,5 @@
-﻿using BookLoverUI.BookModels;
+﻿using BookLoverUI.AuthorModels;
+using BookLoverUI.BookModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace BookLoverUI
                         BookMenu();
                         break;
                     case "2":
-                        //AuthorMenu method;
+                        AuthorMenu();
                         break;
                     case "3":
                         //Review Menu method
@@ -112,5 +113,46 @@ namespace BookLoverUI
             }
             Console.ReadKey();
         }
+
+        public void AuthorMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to do?\n" +
+                "1.Browse all authors\n" +
+                "2.Find an author by name\n" +
+                "3.Add a new author\n" +
+                "0.Go back to main menu");
+
+            string userSelection = Console.ReadLine();
+            switch (userSelection)
+            {
+                case "1":
+                    DisplayAllAuthors();
+                    break;
+                case "2":
+                    //add method to look up author by name
+                    break;
+                case "3":
+                    // add method to add an author
+                    break;
+                case "0":
+                    break;
+                default:
+                    Console.WriteLine("Invalid entry");
+                    AuthorMenu();
+                    break;
+            }
+        }
+        public void DisplayAllAuthors()
+        {
+            Console.Clear();
+            List<AuthorListItems> allAuthors = _service.GetAllAuthors().Result;
+            foreach (AuthorListItems author in allAuthors)
+            {
+                Console.WriteLine(author.FullName);
+            }
+            Console.ReadKey();
+        }
+
     }
 }

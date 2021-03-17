@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorModels\AuthorListItems.cs" />
     <Compile Include="BookLoverService.cs" />
     <Compile Include="BookLoverUI.cs" />
     <Compile Include="BookModels\BookListItem.cs" />

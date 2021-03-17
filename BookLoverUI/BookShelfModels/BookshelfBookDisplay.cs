@@ -10,5 +10,6 @@ namespace BookLoverUI.BookShelfModels
     {
         public int BookId { get; set; }
         public string Title { get; set; }
+        public BookshelfAuthorDisplay Author { get; set; }
     }
 }

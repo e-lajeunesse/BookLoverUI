@@ -49,12 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorMenu.cs" />
+    <Compile Include="AuthorModels\AuthorDetail.cs" />
+    <Compile Include="AuthorModels\AuthorListItems.cs" />
     <Compile Include="BookLoverService.cs" />
     <Compile Include="BookLoverUI.cs" />
     <Compile Include="BookMenu.cs" />
     <Compile Include="BookModels\BookDetail.cs" />
     <Compile Include="BookModels\BookListItem.cs" />
+    <Compile Include="BookReviewMenu.cs" />
+    <Compile Include="BookReviewModels\BookReviewCreate.cs" />
+    <Compile Include="BookReviewModels\BookReviewDetail.cs" />
     <Compile Include="BookReviewModels\BookReviewDisplayItem.cs" />
+    <Compile Include="BookReviewModels\BookReviewEdit.cs" />
+    <Compile Include="BookReviewModels\BookReviewListItem.cs" />
     <Compile Include="BookshelfMenu.cs" />
     <Compile Include="BookShelfModels\BookshelfAuthorDisplay.cs" />
     <Compile Include="BookShelfModels\BookshelfBookDisplay.cs" />

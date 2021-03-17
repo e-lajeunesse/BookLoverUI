@@ -306,9 +306,9 @@ namespace BookLoverUI
             return null;
         }
 
-        public async Task<string> AddUserProfile(string userName)
+        public async Task<string> AddUserProfile(string userName, List<int> bookIds)
         {
-            List<int> bookIds = new List<int>();
+            
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
             Dictionary<string, string> parameters = new Dictionary<string, string>
             {

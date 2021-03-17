@@ -94,7 +94,7 @@ namespace BookLoverUI
                     }
                     bookIds.Add(id);
                 }
-                string profileAdded = Service.AddUserProfile(userName).Result;
+                string profileAdded = Service.AddUserProfile(userName,bookIds).Result;
                 Console.WriteLine(profileAdded);
             }
 

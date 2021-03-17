@@ -179,10 +179,10 @@ namespace BookLoverUI
             return null;
         }
 
-        public async Task<BookReviewEdit> UpdateBookReviewById(int id)
+        public async Task<BookReviewEdit> UpdateBookReview()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview").Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -192,17 +192,37 @@ namespace BookLoverUI
             return null;
         }
 
-        /*public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
+       /* public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
-
+           
             if (response.IsSuccessStatusCode)
             {
                 BookReviewDisplayItem bookReview = await response.Content.ReadAsAsync<BookReviewDisplayItem>();
                 return bookReview;
             }
             return null;
+        }*/
+
+        /*public async Task<string> DeleteBookReview(int reviewId, string reviewTitle)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            string url = $"https://localhost:44388/api/BookReview";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"ReviewId",$"{reviewId}" },
+                {"ReviewTitle",$"{reviewTitle}" }
+            };
+
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = await _client.DeleteAsync(url, parameters);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Review has been deleted";
+            }
+            return response.StatusCode.ToString();
         }*/
     }
 }

@@ -54,7 +54,12 @@
     <Compile Include="BookMenu.cs" />
     <Compile Include="BookModels\BookDetail.cs" />
     <Compile Include="BookModels\BookListItem.cs" />
+    <Compile Include="BookReviewMenu.cs" />
+    <Compile Include="BookReviewModels\BookReviewCreate.cs" />
+    <Compile Include="BookReviewModels\BookReviewDetail.cs" />
     <Compile Include="BookReviewModels\BookReviewDisplayItem.cs" />
+    <Compile Include="BookReviewModels\BookReviewEdit.cs" />
+    <Compile Include="BookReviewModels\BookReviewListItem.cs" />
     <Compile Include="BookShelfModels\BookshelfBookDisplay.cs" />
     <Compile Include="BookShelfModels\BookshelfDisplay.cs" />
     <Compile Include="Program.cs" />

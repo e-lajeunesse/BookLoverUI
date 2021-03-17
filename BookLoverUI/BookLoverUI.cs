@@ -10,7 +10,7 @@ namespace BookLoverUI
 {
     public class BookLoverUI
     {
-        private readonly BookLoverService _service = new BookLoverService();
+        public static readonly BookLoverService Service = new BookLoverService();
 
         public void RunUI()
         {
@@ -31,7 +31,8 @@ namespace BookLoverUI
                 switch (userSelection)                
                 {
                     case "1":                        
-                        BookMenu();
+                        BookMenu bookMenu = new BookMenu();
+                        bookMenu.RunBookMenu();
                         break;
                     case "2":
                         AuthorMenu();
@@ -67,92 +68,12 @@ namespace BookLoverUI
             string email = Console.ReadLine();
             Console.Write("\nPassword: ");
             string password = Console.ReadLine();
-
-            string token = _service.GetToken(email,password).Result;
+            string token = Service.GetToken(email,password).Result;
             Console.WriteLine($"Here's your token: {token}");
-            _service.AccessToken = token;
+            Service.AccessToken = token;
             Console.ReadKey();
         }
 
-        public void BookMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("What would you like to do?\n" +
-                "1.Browse all book\n" +
-                "2.Find a book by name\n" +
-                "3.Add a new book\n" +
-                "0.Go back to main menu");
-
-            string userSelection = Console.ReadLine();
-            switch (userSelection)
-            {
-                case "1":
-                    DisplayAllBooks();
-                    break;
-                case "2":
-                    //add method to look up book by name
-                    break;
-                case "3":
-                    // add method to add a book
-                    break;
-                case "0":
-                    break;
-                default:
-                    Console.WriteLine("Invalid entry");
-                    BookMenu();
-                    break;
-            }
-        }
-        public void DisplayAllBooks()
-        {
-            Console.Clear();
-            List<BookListItem> allBooks = _service.GetAllBooks().Result;
-            foreach (BookListItem book in allBooks)
-            {
-                Console.WriteLine(book.Title);
-            }
-            Console.ReadKey();
-        }
-
-        public void AuthorMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("What would you like to do?\n" +
-                "1.Browse all authors\n" +
-                "2.Find an author by name\n" +
-                "3.Add a new author\n" +
-                "0.Go back to main menu");
-
-            string userSelection = Console.ReadLine();
-            switch (userSelection)
-            {
-                case "1":
-                    DisplayAllAuthors();
-                    break;
-                case "2":
-                    //add method to look up author by name
-                    break;
-                case "3":
-                    // add method to add an author
-                    break;
-                case "0":
-                    break;
-                default:
-                    Console.WriteLine("Invalid entry");
-                    AuthorMenu();
-                    break;
-            }
-        }
-        public void DisplayAllAuthors()
-        {
-            Console.Clear();
-            List<AuthorListItems> allAuthors = _service.GetAllAuthors().Result;
-            foreach (AuthorListItems author in allAuthors)
-            {
-                Console.WriteLine(author.FullName);
-            }
-            Console.ReadKey();
-        }
-
+        
     }
 }

@@ -16,7 +16,7 @@ namespace BookLoverUI
         private HttpClient _client;
         
 
-        public BookLoverService()
+        public BookLoverService() 
         {
             _client = new HttpClient();
         }
@@ -40,6 +40,8 @@ namespace BookLoverUI
             }
             return response.StatusCode.ToString();
         }
+        
+        //Book Methods
         public async Task<List<BookListItem>> GetAllBooks()
         {
 
@@ -67,6 +69,19 @@ namespace BookLoverUI
             return null;
         }
 
+
+        public async Task<BookDetail> GetBookByTitle(string title)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Book?title={title}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                BookDetail book = await response.Content.ReadAsAsync<BookDetail>();
+                return book;
+            }
+            return null;
+        }
 
     }
 }

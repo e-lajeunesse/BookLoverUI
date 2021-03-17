@@ -44,6 +44,8 @@ namespace BookLoverUI
                         break;
                     case "4":
                         //Bookshelf Menu method
+                        BookshelfMenu shelfMenu = new BookshelfMenu();
+                        shelfMenu.RunBookshelfMenu();
                         break;
                     case "0":
                         keepRunning = false;

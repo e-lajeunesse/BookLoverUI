@@ -69,6 +69,8 @@
     <Compile Include="BookShelfModels\BookshelfDisplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserProfileMenu.cs" />
+    <Compile Include="UserProfileModels\UserProfileBookDisplay.cs" />
     <Compile Include="UserProfileModels\UserProfileDisplay.cs" />
   </ItemGroup>
   <ItemGroup>

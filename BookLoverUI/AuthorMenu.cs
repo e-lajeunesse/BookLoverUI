@@ -28,7 +28,10 @@ namespace BookLoverUI
                     GetAuthorByLastName();
                     break;
                 case "3":
-                    //AddAuthor();
+                    AddAuthor();
+                    break;
+                case "4":
+                    DeleteAuthorById();
                     break;
                 case "0":
                     break;
@@ -73,6 +76,20 @@ namespace BookLoverUI
                 Console.WriteLine("Please press any key to return to the main menu.");
 
             }
+            Console.ReadKey();
+        }
+
+        public void AddAuthor()
+        {
+            Console.Clear();
+            Console.Write("Enter the first name of the author: ");
+            string firstName = Console.ReadLine();
+            Console.Write("\nEnter the last name of the author: ");
+            string lastName = Console.ReadLine();
+            Console.Write("\nEnter Author Description: ");
+            string description = Console.ReadLine();
+            string wasAdded = BookLoverUI.Service.AddAuthor(firstName, lastName, description).Result;
+            Console.WriteLine(wasAdded);
             Console.ReadKey();
         }
 

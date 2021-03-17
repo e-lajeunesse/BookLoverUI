@@ -1,7 +1,12 @@
 
-﻿using BookLoverUI.AuthorModels;
+using BookLoverUI.AuthorModels;
 using BookLoverUI.BookModels;
+
+
+using BookLoverUI.BookModels;
+
 using BookLoverUI.BookShelfModels;
+
 using BookLoverUI.BookReviewModels;
 
 using System;
@@ -47,7 +52,7 @@ namespace BookLoverUI
         }
 
         //Book Methods
-        public async Task<string> AddBook(string title,string genre,string description,int authorId)
+        public async Task<string> AddBook(string title, string genre, string description, int authorId)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
             string url = "https://localhost:44388/api/Book";
@@ -63,12 +68,12 @@ namespace BookLoverUI
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
 
-            HttpResponseMessage response = await _client.PostAsync(url,encodedContent);
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
             if (response.IsSuccessStatusCode)
             {
                 return "Book added";
             }
-            
+
             return response.StatusCode.ToString();
 
         }
@@ -84,7 +89,7 @@ namespace BookLoverUI
             var encodedContent = new FormUrlEncodedContent(parameters);
             string url = $"https://localhost:44388/api/Book?title={title}&authorName={name}";
 
-            HttpResponseMessage response = await _client.PostAsync(url,encodedContent);
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
             if (response.IsSuccessStatusCode)
             {
                 return "Book added";
@@ -92,7 +97,7 @@ namespace BookLoverUI
             return response.StatusCode.ToString();
         }
 
-        public async Task<string> AddBooksByAuthor(string firstName,string lastName)
+        public async Task<string> AddBooksByAuthor(string firstName, string lastName)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
             Dictionary<string, string> parameters = new Dictionary<string, string>
@@ -112,7 +117,7 @@ namespace BookLoverUI
         }
         public async Task<List<BookListItem>> GetAllBooks()
         {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",$"{AccessToken}");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
 
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Book").Result;
 
@@ -163,10 +168,28 @@ namespace BookLoverUI
                 return author;
             }
             return null;
-
         }
 
-        
+        public async Task<string> AddAuthor(string firstName, string lastName, string description)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            string url = $"https://localhost:44388/api/Author";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"FirstName",$"{firstName}" },
+                {"LastName",$"{lastName}" },
+                {"Description",$"{description}" },
+            };
+
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Author was added";
+            }
+            return response.StatusCode.ToString();
+        }
 
         // BookReview Methods
 
@@ -198,7 +221,7 @@ namespace BookLoverUI
 
             var encodedContent = new FormUrlEncodedContent(parameters);
 
-            HttpResponseMessage response = await _client.PostAsync(url,encodedContent);
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
             if (response.IsSuccessStatusCode)
             {
                 return "Review has been added";

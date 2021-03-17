@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookLoverUI.BookModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookLoverUI.AuthorModels
 {
-    public class AuthorListItems
+    public class AuthorDetail
     {
         public int AuthorId { get; set; }
 
@@ -14,5 +15,6 @@ namespace BookLoverUI.AuthorModels
         public string LastName { get; set; }
         public string Description { get; set; }
         
-    }   
+      
+    }
 }

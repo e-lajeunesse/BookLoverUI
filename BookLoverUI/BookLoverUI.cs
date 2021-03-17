@@ -35,7 +35,8 @@ namespace BookLoverUI
                         bookMenu.RunBookMenu();
                         break;
                     case "2":
-                        AuthorMenu();
+                        AuthorMenu authorMenu = new AuthorMenu();
+                        authorMenu.RunAuthorMenu();
                         break;
                     case "3":
                         //Review Menu method

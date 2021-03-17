@@ -1,5 +1,6 @@
 ﻿using BookLoverUI.AuthorModels;
 using BookLoverUI.BookModels;
+using BookLoverUI.UserProfileModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,29 @@ namespace BookLoverUI
             string token = Service.GetToken(email,password).Result;
             Console.WriteLine($"Here's your token: {token}");
             Service.AccessToken = token;
+            UserProfileDisplay profile = Service.GetUserProfile().Result;
+            if (profile == null)
+            {
+                Console.WriteLine("Warning, no profile exists for this user.");
+                Console.WriteLine("Please enter desired username for profile: ");
+                string userName = Console.ReadLine();
+                List<int> bookIds = new List<int>();
+                bool keepAdding = true;
+                while(keepAdding)
+                {
+                    Console.Write("Enter Book Id number to add to your To Read List or enter 0 to continue: ");
+                    int id = int.Parse(Console.ReadLine());
+                    if (id == 0)
+                    {
+                        keepAdding = false;
+                    }
+                    bookIds.Add(id);
+                }
+                string profileAdded = Service.AddUserProfile(userName,bookIds).Result;
+                Console.WriteLine(profileAdded);
+            }
+
+
             Console.ReadKey();
         }
 

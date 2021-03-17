@@ -1,5 +1,10 @@
+
+﻿using BookLoverUI.AuthorModels;
+using BookLoverUI.BookModels;
+
 ﻿using BookLoverUI.BookModels;
 using BookLoverUI.BookReviewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +19,9 @@ namespace BookLoverUI
     {
         public string AccessToken { get; set; }
         private HttpClient _client;
-        
 
-        public BookLoverService() 
+
+        public BookLoverService()
         {
             _client = new HttpClient();
         }
@@ -40,7 +45,7 @@ namespace BookLoverUI
             }
             return response.StatusCode.ToString();
         }
-        
+
         //Book Methods
         public async Task<string> AddBook(string title,string genre,string description,int authorId)
         {
@@ -54,6 +59,9 @@ namespace BookLoverUI
                 {"AuthorId",$"{authorId}" }
             };
             var encodedContent = new FormUrlEncodedContent(parameters);
+
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
 
             HttpResponseMessage response = await _client.PostAsync(url,encodedContent);
             if (response.IsSuccessStatusCode)
@@ -105,6 +113,7 @@ namespace BookLoverUI
         public async Task<List<BookListItem>> GetAllBooks()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",$"{AccessToken}");
+
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Book").Result;
 
             if (response.IsSuccessStatusCode)
@@ -114,6 +123,20 @@ namespace BookLoverUI
             }
             return null;
         }
+        public async Task<List<AuthorListItems>> GetAuthors()
+        {
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                List<AuthorListItems> authorListItems = await response.Content.ReadAsAsync<List<AuthorListItems>>();
+                return authorListItems;
+            }
+            return null;
+        }
+
 
         public async Task<BookDetail> GetBookByTitle(string title)
         {
@@ -127,6 +150,23 @@ namespace BookLoverUI
             }
             return null;
         }
+
+
+        public async Task<AuthorDetail> GetAuthorByLastName(string lastName)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author?lastName={lastName}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                AuthorDetail author = await response.Content.ReadAsAsync<AuthorDetail>();
+                return author;
+            }
+            return null;
+
+        }
+
+        
 
         // BookReview Methods
 
@@ -204,5 +244,6 @@ namespace BookLoverUI
             }
             return null;
         }*/
+
     }
 }

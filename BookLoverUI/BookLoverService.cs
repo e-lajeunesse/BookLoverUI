@@ -2,7 +2,11 @@
 using BookLoverUI.AuthorModels;
 using BookLoverUI.BookModels;
 
+
 using BookLoverUI.BookModels;
+
+using BookLoverUI.BookShelfModels;
+
 using BookLoverUI.BookReviewModels;
 
 using System;
@@ -12,6 +16,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using BookLoverUI.UserProfileModels;
 
 namespace BookLoverUI
 {
@@ -106,7 +111,7 @@ namespace BookLoverUI
             HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
             if (response.IsSuccessStatusCode)
             {
-                return "Book added";
+                return "Book(s) added";
             }
             return response.StatusCode.ToString();
         }
@@ -237,10 +242,10 @@ namespace BookLoverUI
             return null;
         }
 
-        public async Task<BookReviewEdit> UpdateBookReviewById(int id)
+        public async Task<BookReviewEdit> UpdateBookReview()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview").Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -250,11 +255,11 @@ namespace BookLoverUI
             return null;
         }
 
-        /*public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
+       /* public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
-
+           
             if (response.IsSuccessStatusCode)
             {
                 BookReviewDisplayItem bookReview = await response.Content.ReadAsAsync<BookReviewDisplayItem>();
@@ -262,6 +267,90 @@ namespace BookLoverUI
             }
             return null;
         }*/
+
+        // Bookshelf Methods
+        public async Task<string> CreateBookshelf(string title, List<int> bookIds)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"Title",$"{title}" },                                
+            };
+            for (int i = 0; i < bookIds.Count; i++)
+            {
+                parameters[$"BookIds[{i}]"] = $"{bookIds[i]}";
+            }
+            var encodedContent = new FormUrlEncodedContent(parameters);
+            string url = "https://localhost:44388/api/Bookshelf";
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Bookshelf added";
+            }
+            else
+            {
+                return response.StatusCode.ToString();
+            }
+        }        
+        public async Task<List<BookshelfDisplay>> GetAllBookshelves()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/GetAllBookshelves").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                List<BookshelfDisplay> shelves = await response.Content.ReadAsAsync<List<BookshelfDisplay>>();
+                return shelves;
+            }
+            return null;
+        }
+
+        public async Task<List<BookshelfDisplay>> GetAllBookshelvesByOwner()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Bookshelf").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                List<BookshelfDisplay> shelves = await response.Content.ReadAsAsync<List<BookshelfDisplay>>();
+                return shelves;
+            }
+            return null;
+        }
+
+        //User Profile Methods
+        public async Task<UserProfileDisplay> GetUserProfile()
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/GetsUserByUserId").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                UserProfileDisplay profile = await response.Content.ReadAsAsync<UserProfileDisplay>();
+                return profile;
+            }
+            return null;
+        }
+
+        public async Task<string> AddUserProfile(string userName, List<int> bookIds)
+        {
+            
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"UserName",$"{userName}" },
+            };
+            for(int i=0; i< bookIds.Count; i++)
+            {
+                parameters[$"BookIds[{i}]"] = $"{bookIds[i]}";
+            }
+            
+            var encodedContent = new FormUrlEncodedContent(parameters);
+            string url = "https://localhost:44388/api/UserProfile";
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Profile Added";
+            }
+            return "Unable to add profile";
+        }
 
     }
 }

@@ -33,8 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,13 +49,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorMenu.cs" />
+    <Compile Include="AuthorModels\AuthorDetail.cs" />
+    <Compile Include="AuthorModels\AuthorListItems.cs" />
     <Compile Include="BookLoverService.cs" />
     <Compile Include="BookLoverUI.cs" />
+    <Compile Include="BookMenu.cs" />
+    <Compile Include="BookModels\BookDetail.cs" />
+    <Compile Include="BookModels\BookListItem.cs" />
+    <Compile Include="BookReviewMenu.cs" />
+    <Compile Include="BookReviewModels\BookReviewCreate.cs" />
+    <Compile Include="BookReviewModels\BookReviewDetail.cs" />
+    <Compile Include="BookReviewModels\BookReviewDisplayItem.cs" />
+    <Compile Include="BookReviewModels\BookReviewEdit.cs" />
+    <Compile Include="BookReviewModels\BookReviewListItem.cs" />
+    <Compile Include="BookshelfMenu.cs" />
+    <Compile Include="BookShelfModels\BookshelfAuthorDisplay.cs" />
+    <Compile Include="BookShelfModels\BookshelfBookDisplay.cs" />
+    <Compile Include="BookShelfModels\BookshelfDisplay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserProfileMenu.cs" />
+    <Compile Include="UserProfileModels\ProfileBookReviewDisplay.cs" />
+    <Compile Include="UserProfileModels\UserProfileBookDisplay.cs" />
+    <Compile Include="UserProfileModels\UserProfileDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

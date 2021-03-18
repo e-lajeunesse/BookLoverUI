@@ -170,8 +170,20 @@ namespace BookLoverUI
                 return books;
             }
             return null;
-        }      
+        }
 
+        public async Task<BookDetail> GetBookById(int bookId)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Book/{bookId}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                BookDetail book = await response.Content.ReadAsAsync<BookDetail>();
+                return book;
+            }
+            return null;
+        }
         public async Task<BookDetail> GetBookByTitle(string title)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");

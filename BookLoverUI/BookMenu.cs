@@ -16,9 +16,10 @@ namespace BookLoverUI
             Console.WriteLine("What would you like to do?\n" +
                 "1.Browse all books\n" +
                 "2.Find a book by title\n" +
-                "3.Browse books by author\n" +
-                "4.Browse books by genre\n" +
-                "5.Add a new book\n" +
+                "3.Find a book by it's Id\n" +
+                "4.Browse books by author\n" +
+                "5.Browse books by genre\n" +
+                "6.Add a new book\n" +
                 "0.Go back to main menu");
 
             string userSelection = Console.ReadLine();
@@ -31,12 +32,15 @@ namespace BookLoverUI
                     GetBookByTitle();
                     break;
                 case "3":
-                    BrowseBooksByAuthor();                    
+                    GetBookById();
                     break;
                 case "4":
-                    BrowseBooksByGenre();
+                    BrowseBooksByAuthor();                    
                     break;
                 case "5":
+                    BrowseBooksByGenre();
+                    break;
+                case "6":
                     AddBookMenu();
                     break;
                 case "0":
@@ -64,7 +68,50 @@ namespace BookLoverUI
             }
             Console.ReadKey();
         }
-
+        public void GetBookById()
+        {
+            Console.Clear();
+            Console.Write("Enter Book Id: ");
+            int bookId = int.Parse(Console.ReadLine());
+            BookDetail book = BookLoverUI.Service.GetBookById(bookId).Result;
+            if (book != null)
+            {
+                Console.WriteLine($"\n\nTitle: {book.Title}");
+                Console.WriteLine($"Book Id: {book.BookId}");
+                Console.WriteLine($"Genre: {book.Genre}");
+                Console.WriteLine($"Average rating: {book.AverageRating}");
+                Console.WriteLine($"Review count: {book.ReviewCount}");
+                Console.WriteLine($"Author Id: {book.AuthorId}");
+                Console.WriteLine($"Author: {book.Author.FullName}");
+                Console.WriteLine($"Description: {book.Description}\n\n");
+                if (book.RecommendedBooks != null)
+                {
+                    Console.WriteLine($"This book is included on the Bookshelf: \"{book.RecommendedBooks.Title}\"," +
+                        $" you might also enjoy the other books on this shelf.");
+                    int count = 1;
+                    foreach (var b in book.RecommendedBooks.Books)
+                    {
+                        Console.WriteLine($"{count}: {b.Title}");
+                        count++;
+                    }
+                }
+                if (book.BookReviews.Any())
+                {
+                    Console.WriteLine($"\nReviews: ");
+                    foreach (var review in book.BookReviews)
+                    {
+                        Console.WriteLine($"Review Id: {review.ReviewId}\n" +
+                            $"Rating: {review.BookRating}\n" +
+                            $"{review.ReviewText}\n");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nBook not found");
+            }
+            Console.ReadKey();
+        }    
         public void GetBookByTitle()
         {
             Console.Clear();

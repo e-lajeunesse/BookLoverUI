@@ -118,18 +118,15 @@ namespace BookLoverUI
         }*/
 
         public void DeleteBookReviewById()
-         {
-             Console.Clear();
-             List<BookReviewListItem> allBookReviews = BookLoverUI.Service.GetAllBookReviews().Result;
-             Console.WriteLine("Please enter the Review Id of the Review you wish to delete:");
+        {
+            Console.Clear();
+            // List<BookReviewListItem> allBookReviews = BookLoverUI.Service.GetAllBookReviews().Result;
+            Console.WriteLine("Please enter the Review Id of the Review you wish to delete:");
 
-             int reviewId = int.Parse(Console.ReadLine());
-             BookReviewDisplayItem bookReviewToDelete = BookLoverUI.Service.DeleteBookReviewById(reviewId).Result;
-             if (bookReviewToDelete.ReviewId == reviewId)
-             {
-                 bookReviewToDelete = BookLoverUI.Service.DeleteBookReviewById(reviewId).Result;
-             }
-         }
+            int reviewId = int.Parse(Console.ReadLine());
+            string wasDeleted = BookLoverUI.Service.DeleteBookReviewById(reviewId).Result;
+            Console.WriteLine("Review was deleted");
+        }
 
         public void PostBookReview()
         {

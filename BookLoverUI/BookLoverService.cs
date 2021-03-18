@@ -1,14 +1,8 @@
 
 using BookLoverUI.AuthorModels;
 using BookLoverUI.BookModels;
-
-
-using BookLoverUI.BookModels;
-
 using BookLoverUI.BookShelfModels;
-
 using BookLoverUI.BookReviewModels;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +41,55 @@ namespace BookLoverUI
             {
                 Dictionary<string, string> responseBody = await response.Content.ReadAsAsync<Dictionary<string, string>>();
                 return responseBody["access_token"];
+            }
+            return response.StatusCode.ToString();
+        }
+
+        //Author Methods
+        public async Task<List<AuthorListItems>> GetAuthors()
+        {
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                List<AuthorListItems> authorListItems = await response.Content.ReadAsAsync<List<AuthorListItems>>();
+                return authorListItems;
+            }
+            return null;
+        }
+
+        public async Task<AuthorDetail> GetAuthorByLastName(string lastName)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author?lastName={lastName}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                AuthorDetail author = await response.Content.ReadAsAsync<AuthorDetail>();
+                return author;
+            }
+            return null;
+        }
+
+        public async Task<string> AddAuthor(string firstName, string lastName, string description)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            string url = $"https://localhost:44388/api/Author";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"FirstName",$"{firstName}" },
+                {"LastName",$"{lastName}" },
+                {"Description",$"{description}" },
+            };
+
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Author was added";
             }
             return response.StatusCode.ToString();
         }
@@ -127,21 +170,7 @@ namespace BookLoverUI
                 return books;
             }
             return null;
-        }
-        public async Task<List<AuthorListItems>> GetAuthors()
-        {
-
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author").Result;
-
-            if (response.IsSuccessStatusCode)
-            {
-                List<AuthorListItems> authorListItems = await response.Content.ReadAsAsync<List<AuthorListItems>>();
-                return authorListItems;
-            }
-            return null;
-        }
-
+        }      
 
         public async Task<BookDetail> GetBookByTitle(string title)
         {
@@ -156,40 +185,32 @@ namespace BookLoverUI
             return null;
         }
 
-
-        public async Task<AuthorDetail> GetAuthorByLastName(string lastName)
+        public async Task<List<BookListItem>> GetBooksByAuthor(string firstName,string lastName)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/Author?lastName={lastName}").Result;
-
+            string url = $"https://localhost:44388/api/Book?firstName={firstName}&lastName={lastName}";
+            HttpResponseMessage response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                AuthorDetail author = await response.Content.ReadAsAsync<AuthorDetail>();
-                return author;
+                List<BookListItem> books = await response.Content.ReadAsAsync<List<BookListItem>>();
+                return books;
             }
             return null;
         }
 
-        public async Task<string> AddAuthor(string firstName, string lastName, string description)
+        public async Task<List<BookListItem>> GetBooksByGenre(string genre)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            string url = $"https://localhost:44388/api/Author";
-            Dictionary<string, string> parameters = new Dictionary<string, string>
-            {
-                {"FirstName",$"{firstName}" },
-                {"LastName",$"{lastName}" },
-                {"Description",$"{description}" },
-            };
-
-            var encodedContent = new FormUrlEncodedContent(parameters);
-
-            HttpResponseMessage response = await _client.PostAsync(url, encodedContent);
+            string url = $"https://localhost:44388/api/Book?genre={genre}";
+            HttpResponseMessage response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                return "Author was added";
+                List<BookListItem> books = await response.Content.ReadAsAsync<List<BookListItem>>();
+                return books;
             }
-            return response.StatusCode.ToString();
+            return null;
         }
+
 
         // BookReview Methods
 
@@ -352,5 +373,24 @@ namespace BookLoverUI
             return "Unable to add profile";
         }
 
+        public async Task<string> AddBookToReadList(int profileId, int bookId)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+            string url = $"https://localhost:44388/api/UserProfile?profileId={profileId}&bookId={bookId}";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"profileId",$"{profileId}" },
+                {"bookId",$"{bookId}" },
+                
+            };
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = await _client.PutAsync(url,encodedContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return "Book added";
+            }
+            return response.StatusCode.ToString();
+        }
     }
 }

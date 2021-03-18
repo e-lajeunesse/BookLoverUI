@@ -16,7 +16,9 @@ namespace BookLoverUI
             Console.WriteLine("What would you like to do?\n" +
                 "1.Browse all books\n" +
                 "2.Find a book by title\n" +
-                "3.Add a new book\n" +
+                "3.Browse books by author\n" +
+                "4.Browse books by genre\n" +
+                "5.Add a new book\n" +
                 "0.Go back to main menu");
 
             string userSelection = Console.ReadLine();
@@ -29,7 +31,13 @@ namespace BookLoverUI
                     GetBookByTitle();
                     break;
                 case "3":
-                    AddBookMenu();                    
+                    BrowseBooksByAuthor();                    
+                    break;
+                case "4":
+                    BrowseBooksByGenre();
+                    break;
+                case "5":
+                    AddBookMenu();
                     break;
                 case "0":
                     break;
@@ -169,6 +177,64 @@ namespace BookLoverUI
             string lastName = Console.ReadLine();
             string wasAdded = BookLoverUI.Service.AddBooksByAuthor(firstName, lastName).Result;
             Console.WriteLine(wasAdded);
+            Console.ReadKey();
+        }
+
+        public void BrowseBooksByAuthor()
+        {
+            Console.Clear();
+            Console.Write("Enter author's first name: ");
+            string firstName = Console.ReadLine();
+            Console.Write("\nEnter author's last name: ");
+            string lastName = Console.ReadLine();
+            List<BookListItem> books = BookLoverUI.Service.GetBooksByAuthor(firstName, lastName).Result;
+            if (books.Count < 1)
+            {
+                Console.WriteLine("No books found");
+            }
+            else
+            {
+                Console.Clear();
+                foreach (BookListItem book in books)
+                {
+                    Console.WriteLine($"Title: {book.Title}");
+                    Console.WriteLine($"Book Id: {book.BookId}");
+                    Console.WriteLine($"Genre: {book.Genre}");
+                    Console.WriteLine($"Average rating: {book.AverageRating}");
+                    Console.WriteLine($"Review count: {book.ReviewCount}");
+                    Console.WriteLine($"Author Id: {book.AuthorId}");
+                    Console.WriteLine($"Author: {book.Author.FullName}");
+                    Console.WriteLine($"Description: {book.Description}\n\n");
+                }
+            }
+            Console.ReadKey();
+        }
+
+        public void BrowseBooksByGenre()
+        {
+            Console.Clear();
+            Console.Write("Enter genre: ");
+            string genre = Console.ReadLine();
+            List<BookListItem> books = BookLoverUI.Service.GetBooksByGenre(genre).Result;
+            if (books.Count < 1)
+            {
+                Console.WriteLine("No books found");
+            }
+            else
+            {
+                Console.Clear();
+                foreach (BookListItem book in books)
+                {
+                    Console.WriteLine($"Title: {book.Title}");
+                    Console.WriteLine($"Book Id: {book.BookId}");
+                    Console.WriteLine($"Genre: {book.Genre}");
+                    Console.WriteLine($"Average rating: {book.AverageRating}");
+                    Console.WriteLine($"Review count: {book.ReviewCount}");
+                    Console.WriteLine($"Author Id: {book.AuthorId}");
+                    Console.WriteLine($"Author: {book.Author.FullName}");
+                    Console.WriteLine($"Description: {book.Description}\n\n");
+                }
+            }
             Console.ReadKey();
         }
     }

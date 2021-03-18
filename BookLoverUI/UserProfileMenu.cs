@@ -1,4 +1,5 @@
-﻿using BookLoverUI.UserProfileModels;
+﻿using BookLoverUI.BookModels;
+using BookLoverUI.UserProfileModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +30,14 @@ namespace BookLoverUI
                     DisplayToReadList();
                     break;
                 case "2":
-                    // Add Book to ToRead List method
+                    AddBookToReadList();                    
                     break;
                 case "3":
-                    // Get all bookshelves by owner
+                    GetOwnersBookshelves();
                     break;
                 case "4":
-                    //Get all reviews by owner
+                    GetOwnersReviews();
+                    break;
                 case "0":
                     break;
                 default:
@@ -52,6 +54,61 @@ namespace BookLoverUI
             {
                 Console.WriteLine($"{i}. Book Id: {_profile.BooksToRead[i-1].BookId}\n" +
                     $"   Title: {_profile.BooksToRead[i-1].Title}\n");
+            }
+            Console.ReadKey();
+        }
+
+        public void AddBookToReadList()
+        {
+            Console.Clear();
+            Console.Write("Enter name of book you wish to add or type 'esc' to go back to menu: ");
+            string title = Console.ReadLine();
+            if (title.ToLower() == "esc")
+            {
+                return;
+            }
+            BookDetail book = BookLoverUI.Service.GetBookByTitle(title).Result;
+            if (book == null)
+            {
+                Console.WriteLine("Unable to find book with that title, press enter to search again" +
+                    " or type 'esc' to go back to menu");
+                string response = Console.ReadLine();
+                if ( response.ToLower() == "esc")
+                {
+                    return;
+                }
+                AddBookToReadList();
+            }
+            Console.Write($"\nSearch returned {book.Title} by {book.Author.FullName}," +
+                $" do you want to add this book enter y/n?");
+            string choice = Console.ReadLine().ToLower();
+            if (choice == "y")
+            {
+                string wasAdded = BookLoverUI.Service.AddBookToReadList(_profile.UserProfileId, book.BookId).Result;
+                Console.WriteLine(wasAdded);
+            }
+            else
+            {
+                AddBookToReadList();
+            }
+            Console.ReadKey();
+        }
+
+        public void GetOwnersBookshelves()
+        {
+            BookshelfMenu shelfMenu = new BookshelfMenu();
+            shelfMenu.BrowseBookshelvesByOwner();
+        }
+
+        public void GetOwnersReviews()
+        {
+            Console.Clear();
+            foreach(var review in _profile.BookReviews)
+            {
+                Console.WriteLine($"Review Id: {review.ReviewId}\n" +
+                    $"Book: {review.BookTitle}\n" +
+                    $"Rating: {review.BookRating}\n" +
+                    $"Review: {review.ReviewText}\n");
             }
             Console.ReadKey();
         }

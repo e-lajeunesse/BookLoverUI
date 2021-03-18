@@ -31,7 +31,7 @@ namespace BookLoverUI
                     AddAuthor();
                     break;
                 case "4":
-                    DeleteAuthorById();
+                    //DeleteAuthorById();
                     break;
                 case "0":
                     break;
@@ -51,7 +51,7 @@ namespace BookLoverUI
                 Console.WriteLine($"Author Id: {author.AuthorId}");
                 Console.WriteLine($"First Name: {author.FirstName}");
                 Console.WriteLine($"Last Name: {author.LastName}");
-                Console.WriteLine($"Description: {author.Description}");
+                Console.WriteLine($"Description: {author.Description}\n");
             }
             Console.ReadKey();
         }

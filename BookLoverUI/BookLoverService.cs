@@ -263,18 +263,28 @@ namespace BookLoverUI
             return null;
         }
 
-        /*public async Task<BookReviewEdit> UpdateBookReview()
+        public async Task<string> UpdateBookReview(int reviewId, string reviewTitle, string reviewText, double bookRating)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview").Result;
+            string Uri = $"https://localhost:44388/api/BookReview";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"ReviewId",$"{reviewId}" },
+                {"ReviewTitle",$"{reviewTitle}" },
+                {"ReviewText",$"{reviewText}" },
+                {"BookRating",$"{bookRating}" },
+            };
+            var encodedContent = new FormUrlEncodedContent(parameters);
+
+            HttpResponseMessage response = await _client.PutAsync(Uri,encodedContent);
 
             if (response.IsSuccessStatusCode)
             {
-                BookReviewEdit bookReview = await response.Content.ReadAsAsync<BookReviewEdit>();
-                return bookReview;
+                // BookReviewEdit bookReview = await response.Content.ReadAsAsync<BookReviewEdit>();
+                return "review was updated!";
             }
-            return null;
-        }*/
+            return response.StatusCode.ToString();
+        }
 
         public async Task<string> DeleteBookReviewById(int id)
         {

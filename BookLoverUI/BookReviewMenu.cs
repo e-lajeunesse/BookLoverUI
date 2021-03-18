@@ -33,7 +33,7 @@ namespace BookLoverUI
                     PostBookReview();
                     break;
                 case "4":
-                    //UpdateBookReview();
+                    UpdateBookReview();
                     break;
                 case "5":
                     DeleteBookReviewById();
@@ -85,12 +85,20 @@ namespace BookLoverUI
             Console.ReadKey();
         }
 
-        /*public void UpdateBookReview()
+        public void DeleteBookReviewById()
         {
             Console.Clear();
-            Console.WriteLine("Enter the new Book Id");
-            int bookId = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter the the Rating Id");
+            Console.WriteLine("Please enter the Review Id of the Review you wish to delete:");
+
+            int reviewId = int.Parse(Console.ReadLine());
+            string wasDeleted = BookLoverUI.Service.DeleteBookReviewById(reviewId).Result;
+            Console.WriteLine("Review was deleted");
+        }
+
+        public void UpdateBookReview()
+        {
+            Console.Clear();
+            Console.WriteLine("Enter the Review Id to update");
             int reviewId = int.Parse(Console.ReadLine());
             Console.WriteLine("\nEnter a Title for the Review");
             string reviewTitle = Console.ReadLine();
@@ -98,34 +106,9 @@ namespace BookLoverUI
             string reviewText = Console.ReadLine();
             Console.WriteLine("\nEnter a Rating for the book");
             double bookRating = double.Parse(Console.ReadLine());
-            string wasAdded = BookLoverUI.Service.UpdateBookReview(reviewId, bookId, reviewTitle, reviewText, bookRating).Result;
-            Console.WriteLine(wasAdded);
+            string wasUpdated = BookLoverUI.Service.UpdateBookReview(reviewId, reviewTitle, reviewText, bookRating).Result;
+            Console.WriteLine(wasUpdated);
             Console.ReadKey();
-        }*/
-
-        /*public void UpdateBookReview()
-        {
-            Console.Clear();
-            Console.WriteLine("Enter the Id of the Review you wish to update");
-            int reviewId = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Pulling that up now");
-            
-            if (reviewId = )
-            {
-
-            }
-        }*/
-
-        public void DeleteBookReviewById()
-        {
-            Console.Clear();
-            // List<BookReviewListItem> allBookReviews = BookLoverUI.Service.GetAllBookReviews().Result;
-            Console.WriteLine("Please enter the Review Id of the Review you wish to delete:");
-
-            int reviewId = int.Parse(Console.ReadLine());
-            string wasDeleted = BookLoverUI.Service.DeleteBookReviewById(reviewId).Result;
-            Console.WriteLine("Review was deleted");
         }
 
         public void PostBookReview()

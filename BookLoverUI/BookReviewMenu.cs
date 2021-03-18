@@ -17,7 +17,7 @@ namespace BookLoverUI
                 "2. Find a Review for a book by ID\n" +
                 "3. Leave a review on a book\n" +
                 "4. Update a review left on a book\n" +
-                "5. Delete a review fro a book\n" +
+                "5. Delete a review for a book\n" +
                 "0. Go back to main menu.");
 
             string userInput = Console.ReadLine();

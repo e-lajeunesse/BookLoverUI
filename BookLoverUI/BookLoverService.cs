@@ -263,7 +263,7 @@ namespace BookLoverUI
             return null;
         }
 
-        public async Task<BookReviewEdit> UpdateBookReview()
+        /*public async Task<BookReviewEdit> UpdateBookReview()
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
             HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview").Result;
@@ -274,20 +274,21 @@ namespace BookLoverUI
                 return bookReview;
             }
             return null;
-        }
-
-       /* public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
-        {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
-            HttpResponseMessage response = _client.GetAsync($"https://localhost:44388/api/BookReview/{id}").Result;
-           
-            if (response.IsSuccessStatusCode)
-            {
-                BookReviewDisplayItem bookReview = await response.Content.ReadAsAsync<BookReviewDisplayItem>();
-                return bookReview;
-            }
-            return null;
         }*/
+
+
+        public async Task<BookReviewDisplayItem> DeleteBookReviewById(int id)
+         {
+             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{AccessToken}");
+             HttpResponseMessage response = _client.DeleteAsync($"https://localhost:44388/api/BookReview/{id}").Result;
+
+             if (response.IsSuccessStatusCode)
+             {
+                 BookReviewDisplayItem bookReview = await response.Content.ReadAsAsync<BookReviewDisplayItem>();
+                 return bookReview;
+             }
+             return null;
+         }
 
         // Bookshelf Methods
         public async Task<string> CreateBookshelf(string title, List<int> bookIds)

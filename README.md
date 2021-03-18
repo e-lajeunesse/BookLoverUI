@@ -1,6 +1,6 @@
 # BookLoverUI
 
-This UI was created by Eric Lajuenesse, Benjamen Chamness and Marley Boone. 
+This UI was created by Eric Lajeunesse, Benjamin Chamness and Marley Boone. 
 
 
 Steps on Installing Project- 
